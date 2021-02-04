@@ -1,9 +1,11 @@
 import logging
 import json
+import datetime
 
 import requests
 
 from bot.utils import config
+from bot.models import Task
 
 
 logger = logging.getLogger("testlogger")
@@ -23,7 +25,25 @@ def get_current_tasks():
 
         if response.status_code == 200:
             logger.info("Response body: " + response.text)
+            result = json.loads(response.text)
+
+            if not is_task_exist(result) and len(result) > 0:
+                save_task(result)
         else:
             logger.error("response status code " + response.status_code)
     except:
         logger.error("Fail to call web service")
+
+
+def is_task_exist(body):
+    res = Task.objects.get(key=body["key"])
+
+    return not not res
+
+
+def save_task(body):
+    task = Task()
+    task.key = body["key"]
+    task.summary = body["summary"]
+    task.created_at = datetime.datetime.strptime(body["createdAt"], "%Y-%m-%dT%H:%M:%S.%f%z")
+    task.save()
