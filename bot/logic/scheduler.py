@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings
 
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.background import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from django_apscheduler.jobstores import register_events
 
@@ -14,7 +14,7 @@ logger = logging.getLogger("testlogger")
 
 
 def start():
-    scheduler = BackgroundScheduler(settings.SCHEDULER_CONFIG)
+    scheduler = BlockingScheduler(settings.SCHEDULER_CONFIG)
 
     try:
         scheduler.add_job(
