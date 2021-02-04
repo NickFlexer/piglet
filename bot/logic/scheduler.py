@@ -10,7 +10,7 @@ from . import task_updater
 from bot.utils import config
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("testlogger")
 
 
 def start():

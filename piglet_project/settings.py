@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'vn^nljyjk*%)5ba5nemwy5eltzo+%o8s^)u^kh2k!i0pbwnw@+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 ALLOWED_HOSTS = [
     'https://piglet-project.herokuapp.com',
@@ -129,29 +129,31 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'console': {
-            'format': '%(name)-12s %(levelname)-8s %(message)s'
+        'verbose': {
+            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
+                       'pathname=%(pathname)s lineno=%(lineno)s ' +
+                       'funcname=%(funcName)s %(message)s'),
+            'datefmt': '%Y-%m-%d %H:%M:%S'
         },
-        'file': {
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+        'simple': {
+            'format': '%(levelname)s %(message)s'
         }
     },
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'console'
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
         },
-        'file': {
-            'level': 'WARNING',
-            'class': 'logging.FileHandler',
-            'formatter': 'file',
-            'filename': 'debug.log'
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
         }
     },
     'loggers': {
-        '': {
-            'level': 'WARNING',
-            'handlers': ['console', 'file']
+        'testlogger': {
+            'handlers': ['console'],
+            'level': 'INFO',
         }
     }
 }

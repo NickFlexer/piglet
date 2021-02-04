@@ -6,7 +6,7 @@ import requests
 from bot.utils import config
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("testlogger")
 
 
 def get_current_tasks():
@@ -22,7 +22,7 @@ def get_current_tasks():
         response = requests.request("POST", url=url, headers=headers, data=body)
 
         if response.status_code == 200:
-            logger.debug("Response body: " + response.text)
+            logger.info("Response body: " + response.text)
         else:
             logger.error("response status code " + response.status_code)
     except:
