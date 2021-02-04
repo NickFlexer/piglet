@@ -15,7 +15,7 @@ logger = logging.getLogger("testlogger")
 
 
 def start():
-    scheduler = BackgroundScheduler(settings.SCHEDULER_CONFIG)
+    scheduler = BackgroundScheduler()
     scheduler.add_jobstore(DjangoJobStore(), "default")
     
     try:
