@@ -2,9 +2,10 @@ import logging
 
 from django.conf import settings
 
-from apscheduler.schedulers.background import BlockingScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
-from django_apscheduler.jobstores import register_events
+from django_apscheduler.jobstores import DjangoJobStore, register_events, register_job
+
 
 from . import task_updater
 from bot.utils import config
@@ -14,8 +15,9 @@ logger = logging.getLogger("testlogger")
 
 
 def start():
-    scheduler = BlockingScheduler(settings.SCHEDULER_CONFIG)
-
+    scheduler = BackgroundScheduler(settings.SCHEDULER_CONFIG)
+    scheduler.add_jobstore(DjangoJobStore(), "default")
+    
     try:
         scheduler.add_job(
             task_updater.get_current_tasks,
@@ -25,6 +27,7 @@ def start():
             replace_existing=True
         )
 
+        register_events(scheduler)
         scheduler.start()
     except AttributeError:
         logger.error("Scheduler not started!")
