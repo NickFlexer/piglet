@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def get_setting(topic, setting):
     try:
         res = Setting.objects.get(topic=topic, setting=setting)
-    except Setting.DoesNotExist:
+    except:
         res = None
 
     if not res:
