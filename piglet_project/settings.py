@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'vn^nljyjk*%)5ba5nemwy5eltzo+%o8s^)u^kh2k!i0pbwnw@+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'https://piglet-project.herokuapp.com',

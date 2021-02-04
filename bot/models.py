@@ -13,7 +13,7 @@ class Task(models.Model):
 class Setting(models.Model):
     topic = models.CharField(max_length=200)
     setting = models.CharField(max_length=200)
-    value = models.CharField(max_length=200)
+    value = models.TextField()
 
     def __str__(self):
         return self.topic + "-" + self.setting
