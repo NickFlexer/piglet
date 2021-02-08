@@ -39,7 +39,7 @@ def is_task_exist(body):
     try:
         res = Task.objects.get(key=body["key"])
         return True
-    except Entry.DoesNotExist
+    except Entry.DoesNotExist:
         return False
 
 
