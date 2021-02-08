@@ -27,7 +27,7 @@ def get_current_tasks():
             logger.info("Response body: " + response.text)
             result = json.loads(response.text)
 
-            if not is_task_exist(result) and len(result) > 0:
+            if len(result) > 0 and not is_task_exist(result):
                 save_task(result)
         else:
             logger.error("response status code " + response.status_code)
@@ -37,15 +37,16 @@ def get_current_tasks():
 
 def is_task_exist(body):
     try:
-        res = Task.objects.get(key=body["key"])
+        res = Task.objects.get(key=body[0]["key"])
         return True
-    except Entry.DoesNotExist:
+    except Task.DoesNotExist:
         return False
 
 
 def save_task(body):
-    task = Task()
-    task.key = body["key"]
-    task.summary = body["summary"]
-    task.created_at = datetime.datetime.strptime(body["createdAt"], "%Y-%m-%dT%H:%M:%S.%f%z")
-    task.save()
+    for single_task in body:
+        task = Task()
+        task.key = single_task["key"]
+        task.summary = single_task["summary"]
+        task.created_at = datetime.datetime.strptime(single_task["createdAt"], "%Y-%m-%dT%H:%M:%S.%f%z")
+        task.save()
