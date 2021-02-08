@@ -36,9 +36,11 @@ def get_current_tasks():
 
 
 def is_task_exist(body):
-    res = Task.objects.get(key=body["key"])
-
-    return not not res
+    try:
+        res = Task.objects.get(key=body["key"])
+        return True
+    except Entry.DoesNotExist
+        return False
 
 
 def save_task(body):
